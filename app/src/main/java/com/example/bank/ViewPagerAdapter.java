@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.bank.Fragment.FragmentTrangChu;
+import com.example.bank.Fragment.Fragment_CK24_7;
+import com.example.bank.Fragment.Fragment_CKTNH;
+
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 

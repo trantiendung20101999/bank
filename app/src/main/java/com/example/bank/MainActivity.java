@@ -2,7 +2,6 @@ package com.example.bank;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -13,21 +12,25 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.bank.model.UserLoginResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import java.io.Serializable;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private TextView txtNameId;
     private TextView txtWellcome;
     private ImageButton imbLogout;
     private ImageButton imgBackpress;
+    public static UserLoginResponse u;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         initActionBar();
         init();
@@ -35,11 +38,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent= getIntent();
 
-        String name = intent.getStringExtra("name");
-        String id = intent.getStringExtra("id");
-        if(name !=null && id !=null) {
-                txtWellcome.setText("Hello "+name);
-                txtNameId.setText(name + "-" + id);
+        u = (UserLoginResponse) intent.getSerializableExtra("user");
+
+        if(u!=null) {
+                txtWellcome.setText("Hello "+u.getFullName());
                 imbLogout.setVisibility(View.VISIBLE);
         }
 
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         tabLayout = findViewById( R.id.tabMain);
         viewPager = findViewById(R.id.viewpager);
-        txtNameId=findViewById(R.id.txtNameId);
         buttonEffect(imbLogout);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),3);
         viewPager.setAdapter(viewPagerAdapter);
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(v==imbLogout)
         {
+
             Intent intent1 = new Intent(MainActivity.this,MainActivity.class);
             LoginManager.getInstance().logOut();
             startActivity(intent1);

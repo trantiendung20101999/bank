@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="ghost_white">#F8F8FF</color>
     <color name="facebook_background_color">#4e71ba</color>
+    <color name="danger">#f8d7da</color>
+    <color name="success">#5cb85c</color>
+    <color name="coin">#F3C70D</color>
 </resources>
