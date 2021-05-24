@@ -12,6 +12,49 @@ public class UserResSend implements Serializable {
     private String dob;
     private String address;
     private String idCard;
+    private String facebookId;
+    private String money;
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
+    }
+
+    public UserResSend(String username, String password, String fullName, String email, String phone, String dob, String address, String idCard, String facebookId, String money) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+        this.address = address;
+        this.idCard = idCard;
+        this.facebookId = facebookId;
+        this.money = money;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public UserResSend(String username, String password, String fullName, String email, String phone, String dob, String address, String idCard, String facebookId) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+        this.address = address;
+        this.idCard = idCard;
+        this.facebookId = facebookId;
+    }
 
     public UserResSend(String username, String password, String fullName, String email, String phone, String dob, String address, String idCard) {
         this.username = username;

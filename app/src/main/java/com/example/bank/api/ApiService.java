@@ -6,6 +6,7 @@ import com.example.bank.model.SaveBankSavingBook;
 import com.example.bank.model.UserLoginResponse;
 import com.example.bank.model.UserResResponse;
 import com.example.bank.model.UserResSend;
+import com.example.bank.model.UserUpdate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,7 +18,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -35,6 +38,13 @@ public interface ApiService {
     @POST("api/auth/signup")
     Call<UserResResponse>signUp(@Body UserResSend urs);
 
+    @PUT("api/users/{id}")
+    Call<UserLoginResponse>update(@Path("id") long id,
+                 @Body UserUpdate ud,
+                       @Header("Authorization") String auth);
+
+    @GET("api/auth/sigin_fb")
+    Call<UserLoginResponse>signinlogin(@Query("faceId") String faceId);
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("api/bank/{id}")

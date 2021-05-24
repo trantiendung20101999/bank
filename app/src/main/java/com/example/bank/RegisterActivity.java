@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -57,7 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
                 password = edPassword.getText().toString();
                 fullname = edFullname.getText().toString();
                 email = edEmail.getText().toString();
-                UserResSend urs = new UserResSend(username,password,fullname,email,phone,dob,address,idCard);
+                String facebookId=LoginActivity.id[0];
+                UserResSend urs = new UserResSend(username,password,fullname,email,phone,dob,address,idCard,facebookId);
                 ApiService.apiService.signUp(urs).enqueue(new Callback<UserResResponse>() {
                     @Override
                     public void onResponse(Call<UserResResponse> call, Response<UserResResponse> response) {

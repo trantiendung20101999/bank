@@ -9,6 +9,10 @@ public class Role implements Serializable {
     public Role() {
     }
 
+    public Role(Integer id) {
+        this.id = id;
+    }
+
     public Role(UserRole name) {
         this.name = name;
     }

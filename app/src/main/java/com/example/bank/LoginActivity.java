@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.bank.api.ApiService;
 import com.example.bank.model.Account;
 import com.example.bank.model.UserLoginResponse;
+import com.example.bank.model.UserResResponse;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -50,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnLoggin;
     private Button btnSignup;
     Handler handler;
+    public static final String[] id = new String[1];
+    public static final String[] name = new String[1];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onSuccess(LoginResult loginResult) {
 
-                        final String[] id = new String[1];
-                        final String[] name = new String[1];
+
                         AccessToken accessToken = AccessToken.getCurrentAccessToken();
                         GraphRequest request = GraphRequest.newMeRequest(
                                 accessToken,
@@ -78,10 +80,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         try {
                                             id[0] = object.getString("id");
                                             name[0] = object.getString("name");
-                                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                            intent.putExtra("id",id[0]);
-                                            intent.putExtra("name",name[0]);
-                                            startActivity(intent);
+                                            ApiService.apiService.signinlogin(id[0])
+                                                    .enqueue(new Callback<UserLoginResponse>() {
+                                                        @Override
+                                                        public void onResponse(Call<UserLoginResponse> call, Response<UserLoginResponse> response) {
+                                                            UserLoginResponse u = response.body();
+                                                            if(u!=null)
+                                                            {
+                                                                Log.e("false","ok");
+                                                                Log.e("dddd",u.getUsername());
+                                                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                                                intent.putExtra("user",u);
+                                                                startActivity(intent);
+                                                            }
+                                                            else
+                                                            {
+                                                                Log.e("true",id[0]);
+                                                                txtAlert.setText("Tài khoản facebook chưa được liên kết , đăng nhập để liên kết");
+                                                                txtAlert.setVisibility(View.VISIBLE);
+                                                                txtAlert.animate().scaleY(1).setInterpolator(new DecelerateInterpolator()).start();
+
+                                                                new CountDown().start();
+                                                                handler = new Handler(){
+                                                                    @Override
+                                                                    public void handleMessage(@NonNull Message msg) {
+                                                                        switch (msg.what)
+                                                                        {
+                                                                            case 1000:
+                                                                            {
+                                                                                break;
+                                                                            }
+                                                                            case 123:
+                                                                            {
+                                                                                txtAlert.animate().scaleY(0).setInterpolator(new DecelerateInterpolator()).start();
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                };
+                                                                //txtAlert.animate().scaleY(1).setInterpolator(new DecelerateInterpolator()).start();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<UserLoginResponse> call, Throwable t) {
+                                                            Log.e("false2",id[0]);
+
+                                                        }
+                                                    });
+
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

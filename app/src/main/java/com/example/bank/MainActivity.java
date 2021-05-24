@@ -12,11 +12,19 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.bank.api.ApiService;
+import com.example.bank.model.Role;
 import com.example.bank.model.UserLoginResponse;
+import com.example.bank.model.UserUpdate;
 import com.facebook.login.LoginManager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.Serializable;
+import java.util.HashSet;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Serializable {
 
@@ -43,6 +51,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(u!=null) {
                 txtWellcome.setText("Hello "+u.getFullName());
                 imbLogout.setVisibility(View.VISIBLE);
+            UserUpdate uu = new UserUpdate();
+            uu.setAccessToken(u.getAccessToken());
+            uu.setAddress(u.getAddress());
+            uu.setDob(u.getDob());
+            uu.setEmail(u.getEmail());
+            uu.setFacebookId(LoginActivity.id[0]);
+            uu.setFullName(u.getFullName());
+            uu.setId(u.getId());
+            uu.setIdCard(u.getIdCard());
+            uu.setMoney(u.getMoney());
+            uu.setPhone(u.getPhone());
+            HashSet<Role> roles = new HashSet<>();
+            roles.add(new Role(2));
+            uu.setRoles(roles);
+            uu.setTokenType(u.getTokenType());
+            uu.setUsername(u.getUsername());
+                u.setFacebookId(LoginActivity.id[0]);
+                ApiService.apiService.update(u.getId(),uu,"Bearer " + MainActivity.u.getAccessToken()).enqueue(new Callback<UserLoginResponse>() {
+                    @Override
+                    public void onResponse(Call<UserLoginResponse> call, Response<UserLoginResponse> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserLoginResponse> call, Throwable t) {
+
+                    }
+                });
         }
 
     }
